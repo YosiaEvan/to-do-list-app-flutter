@@ -79,6 +79,18 @@ class _TodoPageState extends State<TodoPage> {
     }
   }
 
+  String getTimeOfDay() {
+    int hour = DateTime.now().hour;
+
+    if (hour >= 5 && hour < 12) {
+      return "Pagi";
+    } else if (hour >= 12 && hour < 18) {
+      return "Siang";
+    } else {
+      return "Malam";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +100,7 @@ class _TodoPageState extends State<TodoPage> {
             Padding(
               padding: EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     getToday(),
@@ -97,6 +110,14 @@ class _TodoPageState extends State<TodoPage> {
                       color: Color(0xff6a7282),
                     ),
                   ),
+                  SizedBox(height: 5,),
+                  Text(
+                    "Selamat ${getTimeOfDay()} 👋",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ],
               ),
             )
