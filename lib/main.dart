@@ -123,6 +123,15 @@ class _TodoPageState extends State<TodoPage> {
             )
           ],
         ),
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 16, right: 16),
+        child: FloatingActionButton(
+          onPressed: () {
+            print("Tambah task");
+          },
+          child: Icon(Icons.add),
+        ),
       )
     );
   }
