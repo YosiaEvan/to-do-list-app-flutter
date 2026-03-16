@@ -25,6 +25,8 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
+  TextEditingController taskController = TextEditingController();
+  List<Map<String, String>> todolist = [];
   DateTime now = DateTime.now();
 
   String getToday() {
@@ -98,6 +100,7 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.all(16),
@@ -119,10 +122,29 @@ class _TodoPageState extends State<TodoPage> {
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  SizedBox(height: 5,),
+                  Text(
+                    "${todolist.length} tugas tersisa",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff6a7282),
+                    ),
                   )
                 ],
               ),
-            )
+            ),
+            Expanded(
+                child: ListView.builder(
+                  itemCount: todolist.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(todolist[index]["task"]!),
+                      subtitle: Text(todolist[index]["priority"]!),
+                    );
+                  },
+                )
+            ),
           ],
         ),
       ),
@@ -156,6 +178,7 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                           SizedBox(height: 20,),
                           TextField(
+                            controller: taskController,
                             autofocus: true,
                             decoration: InputDecoration(
                                 hintText: "Apa yang ingin kamu kerjakan?",
@@ -223,7 +246,17 @@ class _TodoPageState extends State<TodoPage> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  todolist.add({
+                                    "task": taskController.text,
+                                    "priority": priority,
+                                  });
+                                });
+
+                                taskController.clear();
+                                Navigator.pop(context);
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff2b7fff),
                                 shape: RoundedRectangleBorder(
