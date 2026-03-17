@@ -1,16 +1,42 @@
-# todo_app
+# 📝 To Do List App
+A simple and minimalist To-Do List application built using Flutter.
 
-To Do List App
+## 📖 Description
+This application is used to record tasks that need to be done.
+It was created as a learning project to understand basic Flutter concepts.
 
-## Getting Started
+## 🎯 Purpose
+This project was developed for learning purposes.
 
-This project is a starting point for a Flutter application.
+## ✨ Features
+- Add new to-do
+- Mark to-do as completed (checklist)
+- Delete to-do
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
+- Flutter 3.35.7
+- State Management: setState
+- Data Storage: None (in-memory only)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🎨 UI Design
+- Minimalist design
+- Clean and simple interface
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Getting Started
+### Clone Repository
+git clone https://github.com/YosiaEvan/to-do-list-app-flutter.git
+### Install Dependencies
+flutter pub get
+### Run App
+flutter run
+
+## 📸 Screenshots
+(Coming soon)
+
+## 📌 Notes
+This app does not use local storage, so data will be lost when the app is restarted.
+
+## 👤 Author
+### Yosia Evan
+- Instagram: @y_____van
+- Email: yosiaevan23@gmail.com
