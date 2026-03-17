@@ -26,7 +26,7 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   TextEditingController taskController = TextEditingController();
-  List<Map<String, String>> todolist = [];
+  List<Map<String, dynamic>> todolist = [];
   DateTime now = DateTime.now();
 
   String getToday() {
@@ -97,6 +97,9 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> filteredList = todolist.where((task) => task["isCompleted"] == false).toList();
+    List<Map<String, dynamic>> completedList = todolist.where((task) => task["isCompleted"] == true).toList();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -134,17 +137,156 @@ class _TodoPageState extends State<TodoPage> {
                 ],
               ),
             ),
-            Expanded(
-                child: ListView.builder(
-                  itemCount: todolist.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(todolist[index]["task"]!),
-                      subtitle: Text(todolist[index]["priority"]!),
-                    );
-                  },
-                )
+            ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemCount: filteredList.length,
+              itemBuilder: (context, index) {
+                int reversedIndex = filteredList.length - index - 1;
+
+                return ListTile(
+                  tileColor: Color(0xffe5e7eb),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  leading: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        filteredList[reversedIndex]["isCompleted"] = !filteredList[reversedIndex]["isCompleted"];
+                      });
+                    },
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: filteredList[reversedIndex]["isCompleted"]
+                              ? Color(0xff2b7fff)
+                              : Color(0xff6a7282),
+                          width: 2,
+                        ),
+                        color: filteredList[reversedIndex]["isCompleted"]
+                            ? Color(0xff2b7fff)
+                            : Colors.transparent,
+                      ),
+                      child: filteredList[reversedIndex]["isCompleted"]
+                          ? Icon(
+                        Icons.check,
+                        size: 16,
+                        color: Colors.white,
+                      ) : null,
+                    ),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(filteredList[reversedIndex]["task"]),
+                      Row(
+                        children: [
+                          filteredList[reversedIndex]["priority"] == "Penting" ?
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Color(0xfffecaca),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Text(
+                              filteredList[reversedIndex]["priority"] == "Penting" ? "Penting" : "",
+                              style: TextStyle(
+                                color: Color(0xffef4444),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ) : Container(
+                            child: Text(""),
+                          ),
+                          SizedBox(width: 16,),
+                          Icon(
+                            Icons.delete,
+                            color: Color(0xffef4444),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => SizedBox(height: 16,),
             ),
+            completedList.isNotEmpty ? Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                "Selesai",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xff6a7282),
+                ),
+              ),
+            ) : Text(""),
+            completedList.isNotEmpty ? ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemCount: completedList.length,
+              itemBuilder: (context, index) {
+                int reversedIndex = completedList.length - index - 1;
+
+                return ListTile(
+                  tileColor: Color(0xffe5e7eb),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  leading: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        completedList[reversedIndex]["isCompleted"] = !completedList[reversedIndex]["isCompleted"];
+                      });
+                    },
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: completedList[reversedIndex]["isCompleted"]
+                              ? Color(0xff2b7fff)
+                              : Color(0xff6a7282),
+                          width: 2,
+                        ),
+                        color: completedList[reversedIndex]["isCompleted"]
+                          ? Color(0xff2b7fff)
+                          : Colors.transparent,
+                      ),
+                      child: completedList[reversedIndex]["isCompleted"]
+                        ? Icon(
+                            Icons.check,
+                            size: 16,
+                            color: Colors.white,
+                        ) : null,
+                    ),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        completedList[reversedIndex]["task"],
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      Icon(
+                        Icons.delete,
+                        color: Color(0xffef4444),
+                      )
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => SizedBox(height: 16,),
+            ) : Text(""),
           ],
         ),
       ),
@@ -251,6 +393,7 @@ class _TodoPageState extends State<TodoPage> {
                                   todolist.add({
                                     "task": taskController.text,
                                     "priority": priority,
+                                    "isCompleted": false,
                                   });
                                 });
 
