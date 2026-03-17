@@ -204,10 +204,18 @@ class _TodoPageState extends State<TodoPage> {
                             child: Text(""),
                           ),
                           SizedBox(width: 16,),
-                          Icon(
-                            Icons.delete,
-                            color: Color(0xffef4444),
-                          )
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                todolist.remove(filteredList[reversedIndex]);
+                              });
+                            },
+                            child: Icon(
+                              Icons.delete,
+                              color: Color(0xffef4444),
+                              size: 20,
+                            ),
+                          ),
                         ],
                       )
                     ],
@@ -275,12 +283,21 @@ class _TodoPageState extends State<TodoPage> {
                         completedList[reversedIndex]["task"],
                         style: TextStyle(
                           decoration: TextDecoration.lineThrough,
+                          color: Color(0xff6a7282)
                         ),
                       ),
-                      Icon(
-                        Icons.delete,
-                        color: Color(0xffef4444),
-                      )
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            todolist.remove(completedList[reversedIndex]);
+                          });
+                        },
+                        child: Icon(
+                          Icons.delete,
+                          color: Color(0xffef4444),
+                          size: 20,
+                        ),
+                      ),
                     ],
                   ),
                 );
